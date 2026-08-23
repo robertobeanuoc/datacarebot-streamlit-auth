@@ -1,0 +1,20 @@
+[project]
+name = "streamlit-authentik-login"
+version = "0.1.0"
+description = "A small, reusable Authentik OIDC login gate for Streamlit apps."
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit>=1.42.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/streamlit_authentik_login"]
