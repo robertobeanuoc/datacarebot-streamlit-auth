@@ -41,10 +41,12 @@ def require_login(app_name: str = "This app") -> dict:
     query by owner) looks the same regardless of which app it's in.
     """
     if not st.user.is_logged_in:
-        st.title(app_name)
-        st.write("Please log in to continue.")
-        if st.button("Log in with Authentik"):
-            st.login()
+        # No interstitial button: if the visitor already has an Authentik session in another
+        # app (chat, Slack-linked web login, etc.), this round-trips through Authentik's SSO
+        # silently - no credentials re-entered. A button click here would only add friction
+        # without adding security, since st.login() itself does nothing until Authentik redirects
+        # back with a real authorization code.
+        st.login()
         st.stop()
 
     return {

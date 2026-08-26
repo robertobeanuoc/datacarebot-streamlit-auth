@@ -37,27 +37,17 @@ def test_require_login_falls_back_to_preferred_username_when_name_is_missing(moc
 
 
 @patch("streamlit_authentik_login.st")
-def test_require_login_stops_the_page_when_not_logged_in(mock_st):
+def test_require_login_starts_the_oidc_flow_immediately_when_not_logged_in(mock_st):
+    """No interstitial button: an unauthenticated visitor is bounced straight into the OIDC
+    flow, so a visitor with an existing Authentik session elsewhere round-trips silently."""
     mock_st.user = _fake_user(False)
     mock_st.stop.side_effect = _StopCalled
-    mock_st.button.return_value = False
-
-    with pytest.raises(_StopCalled):
-        require_login()
-
-    mock_st.stop.assert_called_once()
-
-
-@patch("streamlit_authentik_login.st")
-def test_require_login_starts_the_oidc_flow_when_the_login_button_is_clicked(mock_st):
-    mock_st.user = _fake_user(False)
-    mock_st.stop.side_effect = _StopCalled
-    mock_st.button.return_value = True
 
     with pytest.raises(_StopCalled):
         require_login()
 
     mock_st.login.assert_called_once()
+    mock_st.stop.assert_called_once()
 
 
 @patch("streamlit_authentik_login.st")
