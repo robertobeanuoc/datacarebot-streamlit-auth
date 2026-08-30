@@ -23,8 +23,19 @@ def test_require_login_returns_the_users_identity_when_logged_in(mock_st):
 
     identity = require_login()
 
-    assert identity == {"sub": "user-123", "email": "a@example.com", "name": "Ada"}
+    assert identity == {"sub": "user-123", "email": "a@example.com", "name": "Ada", "groups": []}
     mock_st.stop.assert_not_called()
+
+
+@patch("streamlit_authentik_login.st")
+def test_require_login_passes_through_groups_when_the_token_has_them(mock_st):
+    mock_st.user = _fake_user(
+        True, sub="user-123", email="a@example.com", name="Ada", groups=["app-food"]
+    )
+
+    identity = require_login()
+
+    assert identity["groups"] == ["app-food"]
 
 
 @patch("streamlit_authentik_login.st")

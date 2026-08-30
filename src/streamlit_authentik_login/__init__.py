@@ -23,6 +23,7 @@ Usage:
 
     user = require_login(app_name="CGM Dashboard")
     st.write(f"Hello, {user['name']}")
+    # user['groups'] - see require_login()'s docstring for what's needed to populate it
 """
 
 import streamlit as st
@@ -36,9 +37,20 @@ def require_login(app_name: str = "This app") -> dict:
     isn't logged in yet - nothing after this call runs until they are.
 
     Returns the logged-in user's identity as a plain dict with `sub`,
-    `email`, `name` - the same shape `session['user']` uses in this
-    ecosystem's Flask apps, so downstream code (e.g. scoping a database
-    query by owner) looks the same regardless of which app it's in.
+    `email`, `name`, `groups` - the same shape `session['user']` uses in
+    this ecosystem's Flask apps, so downstream code (e.g. scoping a
+    database query by owner, or filtering the cross-app switcher menu in
+    webapp-theme's apps.json by `authentik_group`) looks the same
+    regardless of which app it's in.
+
+    `groups` is only populated if the app's own OIDC client requests the
+    `groups` scope (Streamlit defaults to `openid profile email` - add
+    `client_kwargs = { "scope" = "openid profile email groups" }` under
+    `[auth]`/`[auth.<provider>]` in secrets.toml) *and* that scope has a
+    "groups" claim mapped to it in Authentik - see user-management-apps's
+    authentik/scripts/setup_app_access_control.py. Without both, this is
+    always `[]`, not an error - group-based access filtering is opt-in per
+    app, not a hard requirement of logging in at all.
     """
     if not st.user.is_logged_in:
         # No interstitial button: if the visitor already has an Authentik session in another
@@ -53,6 +65,7 @@ def require_login(app_name: str = "This app") -> dict:
         "sub": st.user.get("sub"),
         "email": st.user.get("email"),
         "name": st.user.get("name") or st.user.get("preferred_username"),
+        "groups": st.user.get("groups") or [],
     }
 
 
