@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from streamlit_authentik_login import render_logout_button, require_login
+from datacarebot_streamlit_auth import render_logout_button, require_login
 
 
 class _StopCalled(Exception):
@@ -17,7 +17,7 @@ def _fake_user(is_logged_in: bool, **claims):
     return user
 
 
-@patch("streamlit_authentik_login.st")
+@patch("datacarebot_streamlit_auth.st")
 def test_require_login_returns_the_users_identity_when_logged_in(mock_st):
     mock_st.user = _fake_user(True, sub="user-123", email="a@example.com", name="Ada")
 
@@ -27,7 +27,7 @@ def test_require_login_returns_the_users_identity_when_logged_in(mock_st):
     mock_st.stop.assert_not_called()
 
 
-@patch("streamlit_authentik_login.st")
+@patch("datacarebot_streamlit_auth.st")
 def test_require_login_passes_through_groups_when_the_token_has_them(mock_st):
     mock_st.user = _fake_user(
         True, sub="user-123", email="a@example.com", name="Ada", groups=["app-food"]
@@ -38,7 +38,7 @@ def test_require_login_passes_through_groups_when_the_token_has_them(mock_st):
     assert identity["groups"] == ["app-food"]
 
 
-@patch("streamlit_authentik_login.st")
+@patch("datacarebot_streamlit_auth.st")
 def test_require_login_falls_back_to_preferred_username_when_name_is_missing(mock_st):
     mock_st.user = _fake_user(True, sub="user-123", email="a@example.com", preferred_username="ada")
 
@@ -47,7 +47,7 @@ def test_require_login_falls_back_to_preferred_username_when_name_is_missing(moc
     assert identity["name"] == "ada"
 
 
-@patch("streamlit_authentik_login.st")
+@patch("datacarebot_streamlit_auth.st")
 def test_require_login_starts_the_oidc_flow_immediately_when_not_logged_in(mock_st):
     """No interstitial button: an unauthenticated visitor is bounced straight into the OIDC
     flow, so a visitor with an existing Authentik session elsewhere round-trips silently."""
@@ -61,7 +61,7 @@ def test_require_login_starts_the_oidc_flow_immediately_when_not_logged_in(mock_
     mock_st.stop.assert_called_once()
 
 
-@patch("streamlit_authentik_login.st")
+@patch("datacarebot_streamlit_auth.st")
 def test_render_logout_button_logs_out_when_clicked(mock_st):
     mock_st.sidebar.button.return_value = True
 
@@ -70,7 +70,7 @@ def test_render_logout_button_logs_out_when_clicked(mock_st):
     mock_st.logout.assert_called_once()
 
 
-@patch("streamlit_authentik_login.st")
+@patch("datacarebot_streamlit_auth.st")
 def test_render_logout_button_does_nothing_when_not_clicked(mock_st):
     mock_st.sidebar.button.return_value = False
 

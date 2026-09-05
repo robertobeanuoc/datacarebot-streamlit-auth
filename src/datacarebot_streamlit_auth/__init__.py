@@ -19,7 +19,7 @@ shared, not credentials.
 Usage:
 
     import streamlit as st
-    from streamlit_authentik_login import require_login
+    from datacarebot_streamlit_auth import require_login
 
     user = require_login(app_name="CGM Dashboard")
     st.write(f"Hello, {user['name']}")
