@@ -16,14 +16,14 @@ their own `auth.py` rather than depend on a shared library for it.
 From a `requirements.txt`, pin a commit or tag:
 
 ```
-git+https://github.com/robertobeanuoc/streamlit-authentik-login.git@main
+git+https://github.com/robertobeanuoc/datacarebot-streamlit-auth.git@main
 ```
 
 ## Setup
 
 1. Provision an Authentik OAuth2/OIDC provider + application for your app
    (same as any other app in this ecosystem - see
-   `user-management-apps/authentik/scripts/create_oauth2_client.py`).
+   `datacarebot-identity/authentik/scripts/create_oauth2_client.py`).
 2. Configure Streamlit's built-in auth via `.streamlit/secrets.toml` (or the
    equivalent env vars) in your app:
 

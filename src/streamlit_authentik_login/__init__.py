@@ -3,8 +3,8 @@
 Wraps Streamlit's native `st.login()`/`st.user` support (Streamlit >= 1.42),
 so every Streamlit app in the ecosystem gates access behind the same
 Authentik login without reimplementing it - the Streamlit equivalent of the
-`auth.py` blueprint duplicated across the Flask apps (food_recognition_model,
-strava_to_db), just as a shared package instead, since apps here otherwise
+`auth.py` blueprint duplicated across the Flask apps (datacarebot-food,
+datacarebot-activity), just as a shared package instead, since apps here otherwise
 copy small pieces of boilerplate rather than depend on each other directly.
 
 This package holds no secrets and talks to no specific Authentik instance -
