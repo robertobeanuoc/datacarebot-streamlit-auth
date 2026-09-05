@@ -238,6 +238,26 @@ wheels = [
 ]
 
 [[package]]
+name = "datacarebot-streamlit-auth"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "streamlit" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pytest", marker = "extra == 'dev'" },
+    { name = "streamlit", specifier = ">=1.42.0" },
+]
+provides-extras = ["dev"]
+
+[[package]]
 name = "h11"
 version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1085,26 +1105,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/50/94/928c44a8b7bcd602f
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2b/57/78864764c53885db8a378cc1c47329b4b6e095f7ebd89cd1ffcca4027c89/streamlit-1.62.0-py3-none-any.whl", hash = "sha256:294dbcfe0d6531b0d8593a095e6872dcc6ec4b731723fbb318a0f8102e69162e", size = 10490146, upload-time = "2026-08-19T18:31:19.957Z" },
 ]
-
-[[package]]
-name = "streamlit-authentik-login"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "streamlit" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "pytest" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "pytest", marker = "extra == 'dev'" },
-    { name = "streamlit", specifier = ">=1.42.0" },
-]
-provides-extras = ["dev"]
 
 [[package]]
 name = "toml"

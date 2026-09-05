@@ -1,4 +1,4 @@
-# streamlit-authentik-login
+# datacarebot-streamlit-auth
 
 A small, reusable Authentik OIDC login gate for Streamlit apps in this
 ecosystem. Wraps Streamlit's native `st.login()`/`st.user` support
@@ -40,7 +40,7 @@ git+https://github.com/robertobeanuoc/datacarebot-streamlit-auth.git@main
 
 ```python
 import streamlit as st
-from streamlit_authentik_login import require_login, render_logout_button
+from datacarebot_streamlit_auth import require_login, render_logout_button
 
 user = require_login(app_name="My Dashboard")
 render_logout_button()
